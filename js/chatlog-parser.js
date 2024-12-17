@@ -278,6 +278,7 @@
         if (lowerLine.includes("[anúncio de roleplay]"))return wrapSpan("death", line);
         if (lowerLine.includes("baixo para"))return wrapSpan("grey", line);
         if (lowerLine.includes("(( pm de"))return wrapSpan("yellow", line);
+        if (lowerLine.includes("[dados]"))return wrapSpan("me", line);
         if (/pegou\s+\d+x\s+.+/i.test(lowerLine)) return wrapSpan("green", line);
         if (lowerLine.includes("você recebeu uma localização de"))return colorLocationLine(line);
         if (
