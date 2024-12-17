@@ -183,16 +183,7 @@
                 wrapSpan("radioColor2", line);
         }
 
-        if (lowerLine.includes("says [lower]")) {
-            if (!characterName) {
-                return wrapSpan("darkgrey", line);
-            }
-            return lineWithoutToSection.toLowerCase().includes(characterName) ?
-                wrapSpan("grey", line) :
-                wrapSpan("darkgrey", line);
-        }
-
-        if (lowerLine.includes("diz [baixo]")) {
+        if (lowerLine.includes("diz (baixo)")) {
             if (!characterName) {
                 return wrapSpan("grey", line);
             }
@@ -201,7 +192,7 @@
                 wrapSpan("grey", line);
         }
 
-        if (lowerLine.includes("says:") || lowerLine.includes("shouts:")) {
+        if (lowerLine.includes("diz:") || lowerLine.includes("shouts:")) {
             if (!characterName) {
                 return wrapSpan("white", line);
             }
@@ -283,18 +274,24 @@
         if (lowerLine.includes("has shown you their")) return formatShown(line);
         if (lowerLine.includes("você enviou sua localização com sucesso"))return wrapSpan("green", line);
         if (lowerLine.includes("agora suas mensagens ic estarão em tom baixo"))return wrapSpan("green", line);
+        if (lowerLine.includes("[anúncio]"))return wrapSpan("green", line);
+        if (lowerLine.includes("[anúncio de roleplay]"))return wrapSpan("death", line);
+        if (lowerLine.includes("baixo para"))return wrapSpan("grey", line);
+        if (lowerLine.includes("(( pm de"))return wrapSpan("yellow", line);
+        if (/pegou\s+\d+x\s+.+/i.test(lowerLine)) return wrapSpan("green", line);
         if (lowerLine.includes("você recebeu uma localização de"))return colorLocationLine(line);
         if (
-            lowerLine.includes("você entregou") ||
-            lowerLine.includes("pagou") ||
-            lowerLine.includes("você pagou") ||
-            lowerLine.includes("você recebeu")
+            lowerLine.includes("você entregou x") ||
+            lowerLine.includes("entregou para você $") ||
+            lowerLine.includes("você está sendo revistado por") ||
+            lowerLine.includes("você pagou $") ||
+            lowerLine.includes("entregou para você x")
         )
             return handleTransaction(line);
         if (lowerLine.includes("você agora está mascarado")) return wrapSpan("green", line);
         if (lowerLine.includes("you have shown your inventory")) return wrapSpan("green", line);
         if (lowerLine.includes("você não está mais mascarado")) return wrapSpan("death", line);
-        if (lowerLine.includes("you're being robbed, use /arob")) return formatRobbery(line);
+        if (lowerLine.includes("solicitou uma revista em você")) return wrapSpan("green", line);
         if (lowerLine.startsWith("you've cut")) return formatDrugCut(line);
         if (lowerLine.includes("[property robbery]")) return formatPropertyRobbery(line);
         if (/You've just taken .+?! You will feel the effects of the drug soon\./.test(line)) {
