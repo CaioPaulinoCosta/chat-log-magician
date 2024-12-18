@@ -262,11 +262,13 @@
         if (lowerLine.includes("[megaphone]:")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você atendeu a ligação de")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você desligou a ligação de")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
+        if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("you have received $")) return colorMoneyLine(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
-        if (/\[.*? intercom\]/i.test(lowerLine)) return formatIntercom(line);
+        if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
         if (lowerLine.startsWith("you placed")) return wrapSpan("orange", line);
         if (lowerLine.includes("from the property")) return wrapSpan("death", line);
         if (lowerLine.startsWith("você largou")) return wrapSpan("death", line);
@@ -277,6 +279,9 @@
         if (lowerLine.includes("[anúncio]"))return wrapSpan("green", line);
         if (lowerLine.includes("[anúncio de roleplay]"))return wrapSpan("death", line);
         if (lowerLine.includes("baixo para"))return wrapSpan("grey", line);
+
+
+        
         if (lowerLine.includes("(( pm de"))return wrapSpan("yellow", line);
         if (lowerLine.includes("[dados]"))return wrapSpan("me", line);
         if (/pegou\s+\d+x\s+.+/i.test(lowerLine)) return wrapSpan("green", line);
@@ -301,6 +306,18 @@
         if (line.includes("[CASHTAP]")) {
             return formatCashTap(line);
         }
+
+        if (/\+\s?\$\d+/.test(line)) {
+            return line.replace(/\+\s?\$(\d+)/g, '<span class="green">+ $1</span>');
+        }
+        
+        if (/-\s?\$\d+/.test(line)) {
+            return line.replace(/-\s?\$(\d+)/g, '<span class="salmon">- $1</span>');
+        }
+        if (/^Pagamento de/.test(line)) {
+            return '<span class="grey">' + line + '</span>';
+        }
+        
         return replaceColorCodes(line);
     }
 
@@ -390,39 +407,14 @@
     }
 
     function colorInfoLine(line) {
-        // Check if line matches [INFO]: [date] message
-        const datePattern = /\[INFO\]:\s*\[\d{2}\/[A-Z]{3}\/\d{4}\]\s.+/;
-        if (datePattern.test(line)) {
-            return applyDatePattern(line);
-        }
-
-        // Remove any square brackets except [INFO]
-        line = line.replace(/\[(?!INFO\])|\](?!)/g, '');
-        line = line.replace('[INFO]', '<span class="green">[INFO]</span>');
-
-        // Now, check for different patterns
-        if (line.includes('You have received a contact')) {
-            if (line.includes('/acceptnumber')) {
-                return applyPhoneRequestFormatting(line);
-            } else if (line.includes('/acceptcontact')) {
-                return applyContactShareFormatting(line);
-            }
-        } else if (line.includes('You have shared your number with')) {
-            return applyNumberShareFormatting(line);
-        } else if (line.includes('You have shared')) {
-            return applyContactSharedFormatting(line);
-        } else {
-            // The rest is white
-            return '<span class="white">' + line + '</span>';
-        }
-    }
-
-    function applyDatePattern(line) {
-        return line.replace(
-            /\[INFO\]:\s*(\[\d{2}\/[A-Z]{3}\/\d{4}\])\s(.+)/,
-            '<span class="blue">[INFO]:</span> <span class="orange">$1</span> <span class="white">$2</span>'
-        );
-    }
+        // Mantém as chaves e colore apenas [INFO]
+        const datePattern = /\[INFO\]/; // Captura exatamente "[INFO]"
+        
+        // Substitui apenas [INFO] por um span estilizado
+        line = line.replace(datePattern, '<span class="pink">[INFO]</span>');
+        
+        return line; // Retorna a linha modificada
+    }    
 
     function applyPhoneRequestFormatting(line) {
         // Pattern: [INFO] You have received a contact ([anything here], [numbers here]) from [anything here]. Use /acceptnumber to accept it.
