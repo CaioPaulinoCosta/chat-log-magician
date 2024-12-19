@@ -265,16 +265,12 @@
         if (lowerLine.includes("[celular] sua ligação com")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
-        if (lowerLine.includes("you have received $")) return colorMoneyLine(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
-        if (lowerLine.startsWith("you placed")) return wrapSpan("orange", line);
-        if (lowerLine.includes("from the property")) return wrapSpan("death", line);
-        if (lowerLine.startsWith("você largou")) return wrapSpan("death", line);
-        if (lowerLine.startsWith("use /phonecursor")) return formatPhoneCursor(line);
-        if (lowerLine.includes("has shown you their")) return formatShown(line);
         if (lowerLine.includes("você enviou sua localização com sucesso"))return wrapSpan("green", line);
         if (lowerLine.includes("agora suas mensagens ic estarão em tom baixo"))return wrapSpan("green", line);
         if (lowerLine.includes("[anúncio]"))return wrapSpan("green", line);
@@ -288,13 +284,11 @@
         if (/pegou\s+\d+x\s+.+/i.test(lowerLine)) return wrapSpan("green", line);
         if (lowerLine.includes("você recebeu uma localização de"))return colorLocationLine(line);
         if (
-            lowerLine.includes("você entregou x") ||
-            lowerLine.includes("entregou para você $") ||
             lowerLine.includes("você está sendo revistado por") ||
-            lowerLine.includes("você pagou $") ||
-            lowerLine.includes("entregou para você x")
+            (lowerLine.includes("entregou para você") && /você(?:\s+|\W+|$)(?:\$\d|\d)/.test(lowerLine)) ||
+            (lowerLine.includes("você usou") && /você usou\s+\d+x/i.test(lowerLine))
         )
-            return handleTransaction(line);
+            return handleTransaction(line);               
         if (lowerLine.includes("você agora está mascarado")) return wrapSpan("green", line);
         if (lowerLine.includes("you have shown your inventory")) return wrapSpan("green", line);
         if (lowerLine.includes("você não está mais mascarado")) return wrapSpan("death", line);
