@@ -266,6 +266,7 @@
         if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms de")) return wrapSpan("orangesms", line);
+        if (lowerLine.includes("[celular] você recebeu uma localização de")) return wrapSpan("green", line);
         if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
