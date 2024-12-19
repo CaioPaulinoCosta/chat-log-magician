@@ -262,6 +262,7 @@
         if (lowerLine.includes("[megaphone]:")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você atendeu a ligação de")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você desligou a ligação de")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("[celular] sua ligação com")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
