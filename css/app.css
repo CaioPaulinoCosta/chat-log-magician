@@ -89,6 +89,10 @@ html::-webkit-scrollbar {
 	overflow: visible;
 }
 
+#lineCharacterInput {
+	width: 250;
+}
+
 .me {
 	color: #c2a3da;
 }
@@ -118,7 +122,11 @@ html::-webkit-scrollbar {
 }
 
 .lightgrey {
-	color: #c6c4c4
+	color: #c6c4c4;
+}
+
+.superlightgrey {
+	color: #ebebeb;
 }
 
 .death {

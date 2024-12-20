@@ -199,6 +199,15 @@
             return lineWithoutToSection.toLowerCase().includes(characterName) ?
                 wrapSpan("white", line) :
                 wrapSpan("lightgrey", line);
+        }   
+        
+        if (/diz\s\(para\s.+?\):/i.test(lowerLine)) {
+            if (!characterName) {
+                return wrapSpan("white", line);
+            }
+            return new RegExp(`\\(para ${characterName.toLowerCase()}\\)`, "i").test(lowerLine) ?
+                wrapSpan("lightgrey", line) :
+                wrapSpan("white", line);
         }
 
         return formatLine(line);
@@ -277,7 +286,6 @@
         if (lowerLine.includes("agora suas mensagens ic estarão em tom baixo"))return wrapSpan("green", line);
         if (lowerLine.includes("[anúncio]"))return wrapSpan("green", line);
         if (lowerLine.includes("[anúncio de roleplay]"))return wrapSpan("death", line);
-        if (lowerLine.includes("baixo para"))return wrapSpan("grey", line);
 
 
         
@@ -702,3 +710,4 @@
 
     processOutput();
 });
+
