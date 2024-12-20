@@ -210,6 +210,25 @@
                 wrapSpan("white", line);
         }
 
+        if (/diz\s\(para\s.+?\):/i.test(lowerLine)) {
+            if (!characterName) {
+                return wrapSpan("white", line);
+            }
+            return new RegExp(`\\(para ${characterName.toLowerCase()}\\)`, "i").test(lowerLine) ?
+                wrapSpan("lightgrey", line) :
+                wrapSpan("white", line);
+        }
+
+        if (/diz\s\(baixo\spara\s.+?\):/i.test(lowerLine)) {
+            if (!characterName) {
+                return wrapSpan("grey", line);
+            }
+            return new RegExp(`\\(baixo para ${characterName.toLowerCase()}\\)`, "i").test(lowerLine) ?
+                wrapSpan("lightgrey", line) :
+                wrapSpan("grey", line);
+        }
+        
+
         return formatLine(line);
     }
 
