@@ -190,16 +190,8 @@
             return lineWithoutToSection.toLowerCase().includes(characterName) ?
                 wrapSpan("lightgrey", line) :
                 wrapSpan("grey", line);
-        }
-
-        if (/diz\s\(baixo\spara\s.+?\):/i.test(lowerLine)) {
-            if (!characterName) {
-                return wrapSpan("grey", line);
-            }
-            return new RegExp(`\\(baixo para ${characterName.toLowerCase()}\\)`, "i").test(lowerLine) ?
-                wrapSpan("grey", line) :
-                wrapSpan("lightgrey", line);
-        }
+        }   
+           
 
         if (lowerLine.includes("diz:") || lowerLine.includes("shouts:")) {
             if (!characterName) {
@@ -209,15 +201,29 @@
                 wrapSpan("white", line) :
                 wrapSpan("lightgrey", line);
         }   
-        
-        if (/diz\s\(para\s.+?\):/i.test(lowerLine)) {
-            if (!characterName) {
-                return wrapSpan("white", line);
-            }
-            return new RegExp(`\\(para ${characterName.toLowerCase()}\\)`, "i").test(lowerLine) ?
-                wrapSpan("lightgrey", line) :
-                wrapSpan("white", line);
-        }
+
+// Condição 1
+if (lowerLine.includes("diz (para")) {
+    if (!characterName) {
+        return wrapSpan("lightgrey", line); // Caso characterName não seja definido
+    }
+    const speaker = line.split(" diz (para")[0].trim(); // Extrair o nome de quem está falando
+    return speaker.toLowerCase() === characterName.toLowerCase() ?
+        wrapSpan("white", line) : // Se for o próprio personagem, branco
+        wrapSpan("lightgrey", line); // Caso contrário, cinza claro
+}
+
+// Condição 2
+if (lowerLine.includes("diz (baixo para")) {
+    if (!characterName) {
+        return wrapSpan("grey", line); // Caso characterName não seja definido
+    }
+    const speaker = line.split(" diz (baixo para")[0].trim(); // Extrair o nome de quem está falando
+    return speaker.toLowerCase() === characterName.toLowerCase() ?
+        wrapSpan("lightgrey", line) : // Se for o próprio personagem, cinza claro
+        wrapSpan("grey", line); // Caso contrário, cinza escuro
+}
+
         
 
         return formatLine(line);
