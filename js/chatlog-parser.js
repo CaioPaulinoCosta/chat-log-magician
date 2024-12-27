@@ -294,6 +294,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[celular] você recebeu uma localização de")) return wrapSpan("green", line);
         if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
+        if (lowerLine.includes("aceitou seu convite")) return wrapSpan("green", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
