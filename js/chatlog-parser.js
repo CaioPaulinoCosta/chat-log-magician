@@ -273,7 +273,7 @@ if (lowerLine.includes("diz (baixo para")) {
         }
         if (lowerLine.startsWith("[info]")) return colorInfoLine(line);
         if (lowerLine.includes("[ch: vts - vessel traffic service]")) return formatVesselTraffic(line);
-        if (/\[[^\]]+ -> [^\]]+\]/.test(line)) return wrapSpan("depColor", line);
+        if (/\[[^\]]+ -> [^\]]+\]/.test(line)) return wrapSpan("depColohandleWhispersr", line);
         if (line.startsWith("*")) return wrapSpan("me", line);
         if (line.startsWith(">")) return wrapSpan("ame", line);
         if (lowerLine.includes("(celular) *")) return wrapSpan("me", line);
@@ -350,7 +350,7 @@ if (lowerLine.includes("diz (baixo para")) {
     function handleWhispers(line) {
         return line.startsWith("(Car)") ?
             wrapSpan("yellow", line) :
-            wrapSpan("whisper", line);
+            wrapSpan("yellow", line);
     }
 
     function handleCellphone(line) {
