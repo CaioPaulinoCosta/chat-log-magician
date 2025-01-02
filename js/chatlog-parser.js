@@ -191,8 +191,16 @@
                 wrapSpan("lightgrey", line) :
                 wrapSpan("grey", line);
         }   
-           
 
+        if (lowerLine.includes("sussurra:")) {
+            if (!characterName) {
+                return wrapSpan("yellow", line);
+            }
+            return lineWithoutToSection.toLowerCase().includes(characterName) ?
+                wrapSpan("yellow", line) :
+                wrapSpan("whisper", line);
+        }
+           
         if (lowerLine.includes("diz:") || lowerLine.includes("shouts:")) {
             if (!characterName) {
                 return wrapSpan("white", line);
@@ -294,6 +302,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[celular] você recebeu uma localização de")) return wrapSpan("green", line);
         if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
+        if (lowerLine.includes("o formigamento no seu corpo")) return wrapSpan("salmon", line);
         if (lowerLine.includes("aceitou seu convite")) return wrapSpan("green", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
