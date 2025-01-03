@@ -38,7 +38,7 @@
     }
 
     function toggleCensorshipStyle() {
-        censorshipStyle = (censorshipStyle === 'blur') ? 'Oculto' : 'blur';
+        censorshipStyle = (censorshipStyle === 'blur') ? 'hidden' : 'blur';
         $toggleCensorshipStyleBtn.text(`Tipo de censura: ${censorshipStyle.charAt(0).toUpperCase() + censorshipStyle.slice(1)}`);
         processOutput();
     }
@@ -123,7 +123,8 @@
             return formattedLine;
         }
 
-        const censorshipRules = [{
+        const censorshipRules = [
+            {
                 regex: /(?<!K)\$\d+(?:,\d{3})*\.\d{1,3}/g,
                 replacement: (match) => `<span class="${censorshipStyle}">${match}</span>`
             },
@@ -154,16 +155,26 @@
             {
                 regex: /(?<!K)(?=.*<span class="blue">)x(\d+)/g,
                 replacement: (_match, p1) => `x<span class="${censorshipStyle}">${p1}</span>`
+            },
+            // Nova Regra - Detectar número seguido de "x" (ex: 1x, 5x)
+            {
+                regex: /\b\d+x\b/g,
+                replacement: (match) => `<span class="${censorshipStyle}">${match}</span>`
+            },
+            // Nova Regra - Detectar exatamente 7 dígitos
+            {
+                regex: /\b\d{7}\b/g,
+                replacement: (match) => `<span class="${censorshipStyle}">${match}</span>`
             }
         ];
-
+        
         let censoredLine = formattedLine;
         censorshipRules.forEach(rule => {
             censoredLine = censoredLine.replace(rule.regex, rule.replacement);
         });
-
+        
         return censoredLine;
-    }
+    }        
 
     function removeTimestamps(line) {
         return line.replace(/\[\d{2}:\d{2}:\d{2}\] /g, "");
