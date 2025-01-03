@@ -200,6 +200,15 @@
                 wrapSpan("yellow", line) :
                 wrapSpan("whisper", line);
         }
+
+        if (lowerLine.includes("sussurra (veículo):")) {
+            if (!characterName) {
+                return wrapSpan("yellow", line);
+            }
+            return lineWithoutToSection.toLowerCase().includes(characterName) ?
+                wrapSpan("yellow", line) :
+                wrapSpan("whisper", line);
+        }
            
         if (lowerLine.includes("diz:") || lowerLine.includes("shouts:")) {
             if (!characterName) {
