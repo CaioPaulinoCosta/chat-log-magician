@@ -318,6 +318,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[celular] sua ligação com")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("[celular] sua ligação para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("(/atender ou /des)")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms de")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] você recebeu uma localização de")) return wrapSpan("green", line);
