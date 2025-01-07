@@ -326,6 +326,11 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
         if (lowerLine.includes("o formigamento no seu corpo")) return wrapSpan("salmon", line);
         if (lowerLine.includes("aceitou seu convite")) return wrapSpan("green", line);
+
+        if (lowerLine.includes("(/ac 5 para aceitar ou /rc 5 para recusar)")) return wrapSpan("green", line);
+        if (lowerLine.includes("aceitou o convite para entrar na")) return wrapSpan("green", line);
+
+
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
