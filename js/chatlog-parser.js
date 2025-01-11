@@ -322,6 +322,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[celular] sua ligação para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("(/atender ou /des)")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você aceitou o convite para")) return wrapSpan("green", line);
+        if (lowerLine.includes("(/ac 5 para aceitar ou /rc 5 para recusar)")) return wrapSpan("green", line);
         if (lowerLine.includes("[celular] sms de")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] você recebeu uma localização de")) return wrapSpan("green", line);
         if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
