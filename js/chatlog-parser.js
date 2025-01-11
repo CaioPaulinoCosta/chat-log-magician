@@ -389,7 +389,7 @@ if (lowerLine.includes("diz (baixo para")) {
 
     function handleCellphone(line) {
         return line.startsWith("!") ?
-            wrapSpan('yellow', line.slice(1)) :
+            wrapSpan('phone', line.slice(1)) :
             wrapSpan("white", line);
     }
 
