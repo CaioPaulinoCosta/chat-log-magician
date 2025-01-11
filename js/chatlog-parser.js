@@ -319,6 +319,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[celular] você está ligando para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("[celular] sua ligação para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("(/atender ou /des)")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você aceitou o convite para")) return wrapSpan("green", line);
         if (lowerLine.includes("[celular] sms de")) return wrapSpan("orangesms", line);
@@ -327,7 +328,6 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
         if (lowerLine.includes("o formigamento no seu corpo")) return wrapSpan("salmon", line);
         if (lowerLine.includes("aceitou seu convite")) return wrapSpan("green", line);
-        if (lowerLine.includes("convidou você para a empresa")) return wrapSpan("green", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
