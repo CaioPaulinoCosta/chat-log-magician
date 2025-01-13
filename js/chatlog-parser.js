@@ -746,14 +746,6 @@ if (lowerLine.includes("diz (baixo para")) {
     }
 
     function applyStyles() {
-        $(".generated:first").css({
-            "margin-top": "0",
-            "padding-top": "1px",
-        });
-        $(".generated:last").css({
-            "padding-bottom": "1px",
-            "margin-bottom": "0",
-        });
         $(".generated").css("background-color", "transparent");
 
         if (applyBackground) {
