@@ -199,8 +199,8 @@
                 return wrapSpan("grey", line);
             }
             return lineWithoutToSection.toLowerCase().includes(characterName) ?
-                wrapSpan("lightgrey", line) :
-                wrapSpan("grey", line);
+                wrapSpan("white", line) :
+                wrapSpan("lightgrey", line);
         }   
 
         if (lowerLine.includes("sussurra:")) {
@@ -244,12 +244,12 @@ if (lowerLine.includes("diz (para")) {
 // Condição 2
 if (lowerLine.includes("diz (baixo para")) {
     if (!characterName) {
-        return wrapSpan("grey", line); // Caso characterName não seja definido
+        return wrapSpan("lightgrey", line); // Caso characterName não seja definido
     }
     const speaker = line.split(" diz (baixo para")[0].trim(); // Extrair o nome de quem está falando
     return speaker.toLowerCase() === characterName.toLowerCase() ?
-        wrapSpan("lightgrey", line) : // Se for o próprio personagem, cinza claro
-        wrapSpan("grey", line); // Caso contrário, cinza escuro
+        wrapSpan("white", line) : // Se for o próprio personagem, cinza claro
+        wrapSpan("lightgrey", line); // Caso contrário, cinza escuro
 }
 
         
@@ -316,21 +316,19 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[celular] você atendeu a ligação de")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você desligou a ligação de")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sua ligação com")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("[celular] você está ligando para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sms em")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] sms para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sua ligação para")) return wrapSpan("yellow", line);
         if (lowerLine.includes("(/atender ou /des)")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("você aceitou o convite para")) return wrapSpan("green", line);
+        if (lowerLine.includes("(/ac 5 para aceitar ou /rc 5 para recusar)")) return wrapSpan("green", line);
         if (lowerLine.includes("[celular] sms de")) return wrapSpan("orangesms", line);
         if (lowerLine.includes("[celular] você recebeu uma localização de")) return wrapSpan("green", line);
         if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
         if (lowerLine.includes("o formigamento no seu corpo")) return wrapSpan("salmon", line);
         if (lowerLine.includes("aceitou seu convite")) return wrapSpan("green", line);
-
-        if (lowerLine.includes("(/ac 5 para aceitar ou /rc 5 para recusar)")) return wrapSpan("green", line);
-        if (lowerLine.includes("aceitou o convite para entrar na")) return wrapSpan("green", line);
-
-
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
@@ -391,7 +389,7 @@ if (lowerLine.includes("diz (baixo para")) {
 
     function handleCellphone(line) {
         return line.startsWith("!") ?
-            wrapSpan('yellow', line.slice(1)) :
+            wrapSpan('phone', line.slice(1)) :
             wrapSpan("white", line);
     }
 
