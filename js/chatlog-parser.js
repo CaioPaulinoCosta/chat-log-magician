@@ -199,8 +199,8 @@
                 return wrapSpan("grey", line);
             }
             return lineWithoutToSection.toLowerCase().includes(characterName) ?
-                wrapSpan("lightgrey", line) :
-                wrapSpan("grey", line);
+                wrapSpan("white", line) :
+                wrapSpan("lightgrey", line);
         }   
 
         if (lowerLine.includes("sussurra:")) {
@@ -244,12 +244,12 @@ if (lowerLine.includes("diz (para")) {
 // Condição 2
 if (lowerLine.includes("diz (baixo para")) {
     if (!characterName) {
-        return wrapSpan("grey", line); // Caso characterName não seja definido
+        return wrapSpan("lightgrey", line); // Caso characterName não seja definido
     }
     const speaker = line.split(" diz (baixo para")[0].trim(); // Extrair o nome de quem está falando
     return speaker.toLowerCase() === characterName.toLowerCase() ?
-        wrapSpan("lightgrey", line) : // Se for o próprio personagem, cinza claro
-        wrapSpan("grey", line); // Caso contrário, cinza escuro
+        wrapSpan("white", line) : // Se for o próprio personagem, cinza claro
+        wrapSpan("lightgrey", line); // Caso contrário, cinza escuro
 }
 
         
