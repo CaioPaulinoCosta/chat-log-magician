@@ -307,6 +307,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("(celular) *")) return wrapSpan("me", line);
         if (lowerLine.includes("sussurra:")) return handleWhispers(line);
         if (lowerLine.includes("diz (celular):")) return handleCellphone(line);
+        if (lowerLine.includes("&")) return handleDrug(line);
         if (
             lowerLine.includes("(goods)") ||
             lowerLine.match(/(.+?)\s+x(\d+)\s+\((\d+g)\)/)
@@ -392,6 +393,12 @@ if (lowerLine.includes("diz (baixo para")) {
     function handleCellphone(line) {
         return line.startsWith("!") ?
             wrapSpan('phone', line.slice(1)) :
+            wrapSpan("white", line);
+    }
+
+    function handleDrug(line) {
+        return line.startsWith("&") ?
+            wrapSpan('salmon', line.slice(1)) :
             wrapSpan("white", line);
     }
 
