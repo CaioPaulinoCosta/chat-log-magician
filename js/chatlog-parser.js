@@ -313,6 +313,7 @@ if (lowerLine.includes("diz (baixo para")) {
         )
             return handleGoods(line);
         if (lowerLine.includes("[megaphone]:")) return wrapSpan("yellow", line);
+        if (lowerLine.includes("(microfone):")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você atendeu a ligação de")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] você desligou a ligação de")) return wrapSpan("yellow", line);
         if (lowerLine.includes("[celular] sua ligação com")) return wrapSpan("yellow", line);
