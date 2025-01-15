@@ -329,6 +329,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("sussurra (veículo):")) return wrapSpan("yellow", line);
         if (lowerLine.includes("você está em um mood")) return wrapSpan("salmon", line);
         if (lowerLine.includes("o formigamento no seu corpo")) return wrapSpan("salmon", line);
+        if (lowerLine.includes("não importa o que você usou ou a forma que usou")) return wrapSpan("salmon", line);
         if (lowerLine.includes("aceitou seu convite")) return wrapSpan("green", line);
         if (lowerLine.startsWith("info:")) return formatInfo(line);
         if (lowerLine.includes("[drug lab]")) return formatDrugLab();
