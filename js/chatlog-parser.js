@@ -340,8 +340,6 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("agora suas mensagens ic estarão em tom baixo"))return wrapSpan("green", line);
         if (lowerLine.includes("[anúncio]"))return wrapSpan("greenad", line);
         if (lowerLine.includes("[anúncio de roleplay]"))return wrapSpan("death", line);
-
-
         
         if (lowerLine.includes("(( pm de"))return wrapSpan("yellow", line);
         if (lowerLine.includes("[dados]"))return wrapSpan("me", line);
@@ -350,6 +348,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (
             lowerLine.includes("você está sendo revistado por") ||
             (lowerLine.includes("entregou para você") && /você(?:\s+|\W+|$)(?:\$\d|\d)/.test(lowerLine)) ||
+            (lowerLine.includes("pagou") && /pagou(?:\s+|\W+|$)(?:\$\d|\d)/.test(lowerLine)) ||
             (lowerLine.includes("você usou") && /você usou\s+\d+x/i.test(lowerLine))
         )
             return handleTransaction(line);               
