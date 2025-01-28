@@ -338,6 +338,7 @@ if (lowerLine.includes("diz (baixo para")) {
         if (lowerLine.includes("[character kill]")) return formatCharacterKill(line);
         if (lowerLine.includes("você enviou sua localização com sucesso"))return wrapSpan("green", line);
         if (lowerLine.includes("agora suas mensagens ic estarão em tom baixo"))return wrapSpan("green", line);
+        if (lowerLine.includes("você abasteceu seu veículo com"))return wrapSpan("green", line);
         if (lowerLine.includes("[anúncio]"))return wrapSpan("greenad", line);
         if (lowerLine.includes("[anúncio de roleplay]"))return wrapSpan("death", line);
         
