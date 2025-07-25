@@ -872,7 +872,7 @@
 
     if (/\[[^\]]+ -> [^\]]+\]/.test(line)) return wrapSpan("depColor", line);
 
-    if (lowerLine.includes("[megaphone]:")) return wrapSpan("yellow", line);
+    if (lowerLine.includes("[megafone]:")) return wrapSpan("yellow", line);
 
     if (line.includes("[Microphone]:")) {
       return wrapSpan("yellow", line);
