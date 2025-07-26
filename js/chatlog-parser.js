@@ -77,63 +77,69 @@
     return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
+  function applyPurpleAsterisks(text) {
+    if (!text.includes("*")) return text;
+    return text.replace(
+      /\*(.*?)\*/g,
+      (_, match) => `<span class="purple">${match}</span>`
+    );
+  }
+
   function formatSaysLine(line, currentCharacterName) {
     if (!currentCharacterName) {
       return wrapSpan("white", line);
     }
 
-    // Check if line starts with [!]
+    // Verifica se a linha começa com [!]
     const hasExclamation = line.startsWith("[!]");
     const lineWithoutExclamation = hasExclamation
       ? line.substring(3).trim()
       : line;
 
-    // Extract the speaker's name (before 'says')
+    // Extrai o nome do falante antes de "diz"
     const nameMatch = lineWithoutExclamation.match(/^([^:]+?)\s+diz/);
     const speakerName = nameMatch ? nameMatch[1].trim().toLowerCase() : "";
 
-    // Check if the line contains (to CharacterName) format
-    const toSectionPattern = /\(to [^)]+\)/i;
+    // Verifica se a linha tem o formato (to CharacterName)
+    const toSectionPattern = /\(para [^)]+\)/i;
     const hasToSection = toSectionPattern.test(lineWithoutExclamation);
 
-    // Determine the color for the main content
+    // Determina a cor principal
     let mainColor;
     if (hasToSection) {
-      // Extract the target name from (to CharacterName)
       const toSectionMatch = lineWithoutExclamation.match(toSectionPattern);
       const targetName = toSectionMatch
-        ? toSectionMatch[0].match(/\(to ([^)]+)\)/i)[1].toLowerCase()
+        ? toSectionMatch[0].match(/\(para ([^)]+)\)/i)[1].toLowerCase()
         : "";
 
-      // If the target is the current character, color as white (directed at you)
       if (targetName === currentCharacterName.toLowerCase()) {
         mainColor = "white";
       } else {
-        // If speaker is the current character, color as white, otherwise lightgrey
         mainColor =
           speakerName === currentCharacterName.toLowerCase()
             ? "white"
             : "lightgrey";
       }
     } else {
-      // No (to CharacterName) format, check if speaker is the current character
-      if (speakerName === currentCharacterName.toLowerCase()) {
-        mainColor = "white";
-      } else {
-        mainColor = "lightgrey";
-      }
+      mainColor =
+        speakerName === currentCharacterName.toLowerCase()
+          ? "white"
+          : "lightgrey";
     }
 
-    // If line has [!], format it specially
+    // Aplica o efeito roxo nos textos entre asteriscos, na linha original
+    const lineWithPurple = applyPurpleAsterisks(line);
+    const finalHtml = wrapSpan("someColorOrClass", lineWithPurple);
+
+    // Se tiver [!], faz formatação especial para não quebrar o HTML
     if (hasExclamation) {
-      // For [!] lines, we need to handle the coloring differently
-      // to avoid the wrapSpan function breaking down the HTML
-      const restOfLine = lineWithoutExclamation;
-      // Return HTML that won't be processed by makeTextColorable
-      return `<span class="toyou colorable">[!]</span> <span class="${mainColor} colorable">${restOfLine}</span>`;
+      // Aqui aplica o efeito roxo na parte sem [!]
+      const restWithPurple = applyPurpleAsterisks(lineWithoutExclamation);
+      return `<span class="toyou colorable">[!]</span> <span class="${mainColor} colorable">${restWithPurple}</span>`;
     }
 
-    return wrapSpan(mainColor, line);
+    // Retorna a linha toda processada pelo wrapSpan com a cor adequada
+    return wrapSpan(mainColor, lineWithPurple);
   }
 
   function replaceDashes(text) {
@@ -512,6 +518,13 @@
 
     return formatLine(line);
   }
+  function applyPurpleAsterisks(text) {
+    if (!text.includes("*")) return text;
+    return text.replace(
+      /\*(.*?)\*/g,
+      (_, match) => `@@PURPLE@@${match}@@ENDPURPLE@@`
+    );
+  }
 
   function applySpecialFormatting(line, lowerLine) {
     const currentCharacterName = $("#characterNameInput")
@@ -645,25 +658,29 @@
     }
 
     if (lowerLine.includes("diz [baixo]:")) {
+      let processedLine = applyPurpleAsterisks(line);
+
       if (!currentCharacterName) {
-        return wrapSpan("grey", line);
+        return wrapSpan("grey", processedLine);
       }
       return lowerLine.includes(currentCharacterName.toLowerCase())
-        ? wrapSpan("lightgrey", line)
-        : wrapSpan("grey", line);
+        ? wrapSpan("lightgrey", processedLine)
+        : wrapSpan("grey", processedLine);
     }
 
     if (lowerLine.includes("diz [baixo] (para")) {
+      let processedLine = applyPurpleAsterisks(line);
+
       if (!currentCharacterName) {
-        return wrapSpan("grey", line);
+        return wrapSpan("grey", processedLine);
       }
 
       const saysIndex = lowerLine.indexOf("diz");
       const nameBeforeSays = lowerLine.substring(0, saysIndex);
       if (nameBeforeSays.includes(currentCharacterName.toLowerCase())) {
-        return wrapSpan("lightgrey", line);
+        return wrapSpan("lightgrey", processedLine);
       }
-      return wrapSpan("grey", line);
+      return wrapSpan("grey", processedLine);
     }
 
     if (
@@ -1076,6 +1093,13 @@
       }
     }
 
+    if (line.includes("*")) {
+      const parsedLine = line.replace(/\*(.*?)\*/g, (_, match) => {
+        return wrapSpan("purple", match);
+      });
+      return parsedLine;
+    }
+
     return null;
   }
 
@@ -1140,13 +1164,19 @@
   }
 
   function wrapSpan(className, content) {
-    // Convert curly apostrophes to straight apostrophes
-    content = content.replace(/['''']/g, "'");
+    // Converte aspas curvas para aspas simples
+    content = content.replace(/[‘’‚‛]/g, "'");
 
-    const words = content.split(/(\s+)/g);
+    const PURPLE_START = "@@PURPLE@@";
+    const PURPLE_END = "@@ENDPURPLE@@";
+
+    // Divide em partes: tags HTML, marcadores roxo, e texto normal
+    const parts = content.split(/(<[^>]+>|@@PURPLE@@|@@ENDPURPLE@@)/g);
+
     let html = "";
     let censoring = false;
     let censorBuffer = "";
+    let inPurple = false;
 
     const flushCensor = () => {
       if (censorBuffer.length > 0) {
@@ -1155,35 +1185,71 @@
       }
     };
 
-    words.forEach((word) => {
-      if (word === "") return;
-      if (/^\s+$/.test(word)) {
-        if (censoring) {
-          censorBuffer += word;
-        } else {
-          html += word;
-        }
+    parts.forEach((part) => {
+      if (part === "") return;
+
+      if (part === PURPLE_START) {
+        flushCensor();
+        inPurple = true;
+        return;
+      }
+      if (part === PURPLE_END) {
+        flushCensor();
+        inPurple = false;
         return;
       }
 
-      for (const char of word) {
-        if (char === "÷") {
-          if (censoring) {
-            flushCensor();
-            censoring = false;
-          } else {
-            censoring = true;
-          }
-        } else if (censoring) {
-          censorBuffer += char;
-        } else {
-          html += `<span class="${className} colorable">${char}</span>`;
-        }
+      if (inPurple) {
+        // Parte roxa: insere inteiro dentro de um único span roxo, sem quebrar
+        html += `<span class="purple">${part}</span>`;
+        return;
       }
+
+      if (part.startsWith("<") && part.endsWith(">")) {
+        flushCensor();
+        // Parte tag HTML, insere sem mexer
+        html += part;
+        return;
+      }
+
+      // Parte texto comum: aplica censura e quebra caractere a caractere com span da cor principal
+      const words = part.split(/(\s+)/g);
+
+      words.forEach((word) => {
+        if (word === "") return;
+
+        if (/^\s+$/.test(word)) {
+          // Espaços
+          if (censoring) {
+            censorBuffer += word;
+          } else {
+            html += word;
+          }
+          return;
+        }
+
+        for (const char of word) {
+          if (char === "÷") {
+            if (censoring) {
+              flushCensor();
+              censoring = false;
+            } else {
+              censoring = true;
+            }
+          } else if (censoring) {
+            censorBuffer += char;
+          } else {
+            if (char === " ") {
+              html += `<span class="${className} colorable">&nbsp;</span>`;
+            } else {
+              html += `<span class="${className} colorable">${char}</span>`;
+            }
+          }
+        }
+      });
     });
 
     if (censoring) {
-      // unmatched delimiter, append as plain text
       html += censorBuffer;
     }
 
