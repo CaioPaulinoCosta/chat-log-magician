@@ -129,7 +129,7 @@
 
     // Aplica o efeito roxo nos textos entre asteriscos, na linha original
     const lineWithPurple = applyPurpleAsterisks(line);
-    const finalHtml = wrapSpan("someColorOrClass", lineWithPurple);
+    const finalHtml = wrapSpan(mainColor, lineWithPurple);
 
     // Se tiver [!], faz formatação especial para não quebrar o HTML
     if (hasExclamation) {
@@ -1014,7 +1014,7 @@
       return formatPropertyRobbery(line);
 
     if (
-      /You've just taken .+?! You will feel the effects of the drug soon\./.test(
+      /Você acabou de pegar .+?! Você sentirá os efeitos da droga em breve\./.test(
         line
       )
     ) {
@@ -1729,12 +1729,12 @@
 
   function formatDrugEffect(line) {
     const pattern =
-      /You've just taken (.+?)! You will feel the effects of the drug soon\./;
+      /Você acabou de pegar (.+?)! Você sentirá os efeitos da droga em breve\./;
     const match = line.match(pattern);
 
     if (match) {
       const drugName = match[1];
-      return `<span class="white">You've just taken </span><span class="green">${drugName}</span><span class="white">! You will feel the effects of the drug soon.</span>`;
+      return `<span class="white">Você acabou de pegar </span><span class="green">${drugName}</span><span class="white">! Você sentirá os efeitos da droga em breve.</span>`;
     }
 
     return line;
