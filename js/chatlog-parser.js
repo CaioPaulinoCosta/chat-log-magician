@@ -891,7 +891,7 @@
 
     if (lowerLine.includes("[megafone]:")) return wrapSpan("yellow", line);
 
-    if (line.includes("[Microphone]:")) {
+    if (line.includes("[Microfone]:")) {
       return wrapSpan("yellow", line);
     }
 
