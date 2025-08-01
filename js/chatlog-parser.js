@@ -738,7 +738,7 @@
       return wrapSpan("green", line);
     }
 
-    if (line.match(/^___Description of .+___$/)) {
+    if (line.match(/^___Descrição de .+___$/)) {
       return wrapSpan("blue", line);
     }
 
@@ -757,7 +757,7 @@
       return wrapSpan("blue", "[INFO]") + wrapSpan("white", parts[1]);
     }
 
-    if (line.match(/^___Tattoos description of .+___$/)) {
+    if (line.match(/^___Tattoos descrição de .+___$/)) {
       return wrapSpan("blue", line);
     }
 
@@ -840,7 +840,7 @@
       return formatPoliceMDC(line);
     }
 
-    if (/\([^\)]+\) Message from [^:]+: .+/.test(line)) {
+    if (/\([^\)]+\) Mensagem [^:]+: .+/.test(line)) {
       return formatSmsMessage(line);
     }
 
@@ -851,11 +851,19 @@
       return formatIncomingCall(line);
     }
 
+    if (/\([^\)]+\) Ligando para .+/.test(line)) {
+      return formatCalling(line);
+    }
+
     if (lowerLine === "você atendeu a chamada.") {
       return wrapSpan("yellow", line);
     }
 
-    if (lowerLine === "you have hung up the call.") {
+    if (lowerLine === "sua chamada foi atendida.") {
+      return wrapSpan("yellow", line);
+    }
+
+    if (lowerLine === "você desligou a chamada.") {
       return wrapSpan("white", line);
     }
 
@@ -1429,8 +1437,8 @@
   }
 
   function formatSmsMessage(line) {
-    // Match the pattern: (phone) Message from sender: content
-    const match = line.match(/^\(([^)]+)\)\s+Message from ([^:]+):\s*(.+)$/);
+    // Match the pattern: (phone) Mensagem sender: content
+    const match = line.match(/^\(([^)]+)\)\s+Mensagem ([^:]+):\s*(.+)$/);
 
     if (match) {
       const phone = match[1];
@@ -1442,7 +1450,7 @@
 
       return wrapSpan(
         "yellow",
-        `(${cleanPhone}) Message from ${sender}: ${message}`
+        `(${cleanPhone}) Mensagem ${sender}: ${message}`
       );
     }
 
@@ -1483,6 +1491,28 @@
         " para atender ou " +
         hangupCommand +
         " para recusar.</span>"
+      );
+    } else {
+      return '<span class="white">' + line + "</span>";
+    }
+  }
+
+  function formatCalling(line) {
+    line = line.replace(/[\[\]]/g, "");
+
+    const match = line.match(/\(([^)]+)\) Ligando para (.+)\./);
+    if (match) {
+      const parenthetical = match[1];
+      const contact = match[2];
+      const pickupCommand = match[3];
+      const hangupCommand = match[4];
+
+      return (
+        '<span class="yellow">(' +
+        parenthetical +
+        ')</span> <span class="white">Ligando para </span><span class="yellow">' +
+        contact +
+        "</span>"
       );
     } else {
       return '<span class="white">' + line + "</span>";
