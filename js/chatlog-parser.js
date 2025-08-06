@@ -637,6 +637,25 @@
       }
     }
 
+    if (
+      line.startsWith("Você encontrou um ") &&
+      line.endsWith(" na propriedade.")
+    ) {
+      const match = line.match(/^Você encontrou um (.+?) na propriedade\.$/);
+      if (match) {
+        const item = match[1];
+        return (
+          wrapSpan("blue", "Você encontrou um ") +
+          wrapSpan("white", item) +
+          wrapSpan("blue", " na propriedade.")
+        );
+      }
+    }
+
+    if (line === "Não há mais nada para roubar nesta propriedade!") {
+      return wrapSpan("death", line);
+    }
+
     if (line.startsWith("Você depositou")) {
       const match = line.match(/^Você depositou \$\d+(?:,\d{3})*\.?$/);
       if (match) {
