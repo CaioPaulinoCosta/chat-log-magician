@@ -652,6 +652,32 @@
       }
     }
 
+    // Linha 1
+    if (
+      line.startsWith("Você está prestes a alugar esse quarto por $") &&
+      line.includes(" por hora. Use /rent confirm para confirmar.")
+    ) {
+      const match = line.match(
+        /^Você está prestes a alugar esse quarto por (\$\d+) por hora\. Use (\/rent confirm) para confirmar\.$/
+      );
+      if (match) {
+        const valor = match[1];
+        const comando = match[2];
+        return (
+          wrapSpan("white", "Você está prestes a alugar esse quarto por ") +
+          wrapSpan("green", valor) +
+          wrapSpan("white", " por hora. Use ") +
+          wrapSpan("blue", comando) +
+          wrapSpan("white", " para confirmar.")
+        );
+      }
+    }
+
+    // Linha 2
+    if (line.startsWith("Você está agora alugando ")) {
+      return wrapSpan("white", line);
+    }
+
     if (line === "Não há mais nada para roubar nesta propriedade!") {
       return wrapSpan("death", line);
     }
