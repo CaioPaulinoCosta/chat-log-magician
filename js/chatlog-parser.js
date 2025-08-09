@@ -927,7 +927,7 @@
 
     if (line.startsWith(">")) return wrapSpan("ame", line);
 
-    if (lowerLine.includes("(phone) *")) return wrapSpan("me", line);
+    if (lowerLine.includes("(Celular) *")) return wrapSpan("me", line);
 
     if (lowerLine.includes("sussurra") || line.startsWith("(Carro)")) {
       return handleWhispers(line);
