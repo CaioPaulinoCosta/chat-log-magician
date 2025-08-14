@@ -839,20 +839,4 @@ $(document).ready(function () {
       '<button class="clear-history-btn" onclick="clearHistory()" aria-label="Clear all history">Clear All</button>'
     )
   );
-
-  // Add click-away functionality for changelog panel
-  $(document).on("click", function (e) {
-    const panel = document.getElementById("changelogPanel");
-    const tab = document.querySelector(".changelog-tab");
-
-    if (
-      !$(e.target).closest("#changelogPanel, .changelog-tab").length &&
-      panel.classList.contains("open")
-    ) {
-      panel.classList.remove("open");
-      panel.setAttribute("aria-hidden", "true");
-      tab.setAttribute("aria-expanded", "false");
-      tab.setAttribute("aria-label", "Open changelog");
-    }
-  });
 });
