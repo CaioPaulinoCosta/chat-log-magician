@@ -60,6 +60,10 @@ html::-webkit-scrollbar {
   margin: 0 auto;
 }
 
+.pixelated {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='pixelate-filter'><feOffset dx='0' dy='0' result='box-blur'/><feFlood x='1' y='1' height='1' width='1'/><feComposite width='3' height='3'/><feTile result='tiles'/><feComposite in='box-blur' operator='in'/><feMorphology operator='dilate' radius='1'/></filter></svg>#pixelate-filter");
+}
+
 .textarea-input {
   width: 100%;
   padding-left: 50px;
@@ -460,8 +464,8 @@ ho .button,
   outline: 1px dotted #3896f3;
 }
 
-.pixelated {
-  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='pixelate-filter'><feOffset dx='0' dy='0' result='box-blur'/><feFlood x='1' y='1' height='1' width='1'/><feComposite width='3' height='3'/><feTile result='tiles'/><feComposite in='box-blur' operator='in'/><feMorphology operator='dilate' radius='1'/></filter></svg>#pixelate-filter");
+.blur {
+  filter: blur(2px);
 }
 
 .hidden {

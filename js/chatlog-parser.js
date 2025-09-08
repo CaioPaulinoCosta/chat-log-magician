@@ -9,8 +9,6 @@
   const $censorCharButton = $("#censorCharButton");
   const $lineLengthInput = $("#lineLengthInput");
   const $characterNameInput = $("#characterNameInput");
-  const $toggleColorPaletteBtn = $("#toggleColorPalette");
-  let $colorPalette = $("#colorPalette");
 
   $toggleBackgroundBtn.click(toggleBackground);
   $toggleCensorshipBtn.click(toggleCensorship);
@@ -254,6 +252,7 @@
 
         // Apply censorship after formatting to catch plain lines
         formattedLine = applyUserCensorship(formattedLine);
+        formattedLine = applyUserCensorshipBlur(formattedLine);
         div.innerHTML = addLineBreaksAndHandleSpans(formattedLine);
 
         // If the formatted line contains HTML (like [!] lines), mark it to skip makeTextColorable
@@ -444,6 +443,27 @@
         // Ensure we're not duplicating content
         if (p1 && p1.trim()) {
           return `<span class="hidden censored-content" data-original="${p1.replace(
+            /"/g,
+            "&quot;"
+          )}">${p1}</span>`;
+        }
+        return match; // Return original if no content to censor
+      });
+    } catch (error) {
+      // Fallback for browsers with regex issues
+      console.warn("Censorship regex failed, using fallback method:", error);
+      return line.replace(/÷/g, "÷"); // Just return the line as-is if regex fails
+    }
+  }
+
+  function applyUserCensorshipBlur(line) {
+    // Use a more robust approach that handles browser compatibility issues
+    // Replace ÷ with a more reliable delimiter and handle edge cases
+    try {
+      return line.replace(/÷(.*?)÷/g, (match, p1) => {
+        // Ensure we're not duplicating content
+        if (p1 && p1.trim()) {
+          return `<span class="blur censored-content" data-original="${p1.replace(
             /"/g,
             "&quot;"
           )}">${p1}</span>`;
@@ -929,7 +949,11 @@
 
     if (lowerLine.includes("(celular) *")) return wrapSpan("me", line);
 
-    if (lowerLine.includes("sussurra") || line.startsWith("(Carro)")) {
+    if (
+      lowerLine.includes("sussurra") ||
+      line.startsWith("(Carro)") ||
+      line.includes("sussurrou para")
+    ) {
       return handleWhispers(line);
     }
 
@@ -1424,7 +1448,7 @@
     }
 
     const groupWhisperPattern =
-      /^[A-Z][a-z]+\s[A-Z][a-z]+\swhispers to \d+\speople/i;
+      /^[A-Z][a-z]+\s[A-Z][a-z]+\ssussurrou para \d+\speople/i;
     const match = line.match(groupWhisperPattern);
     if (match) {
       const splitIndex = match.index + match[0].length;
