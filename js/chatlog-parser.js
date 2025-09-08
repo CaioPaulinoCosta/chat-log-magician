@@ -977,7 +977,7 @@
       }
     }
 
-    if (lowerLine.startsWith("info:")) {
+    if (lowerLine.startsWith("informação:")) {
       if (
         line.includes("card reader") ||
         line.includes("card payment") ||
@@ -999,12 +999,12 @@
 
     if (lowerLine.startsWith("you placed")) return wrapSpan("orange", line);
 
-    if (/^you took.*from the property\.$/i.test(line))
+    if (/^você pegou.*da propriedade\.$/i.test(line))
       return wrapSpan("death", line);
 
-    if (lowerLine.startsWith("you took")) return wrapSpan("orange", line);
+    if (lowerLine.startsWith("você pegou")) return wrapSpan("orange", line);
 
-    if (lowerLine.includes("from the property")) return wrapSpan("death", line);
+    if (lowerLine.includes("da propriedade")) return wrapSpan("death", line);
 
     if (lowerLine.startsWith("you dropped")) return wrapSpan("death", line);
 
@@ -1031,6 +1031,9 @@
       return wrapSpan("green", line);
 
     if (lowerLine.includes("you have shown your inventory"))
+      return wrapSpan("green", line);
+
+    if (lowerLine.includes("você conseguiu invadir este veículo"))
       return wrapSpan("green", line);
 
     if (lowerLine.includes("you are not masked anymore"))
@@ -1460,25 +1463,29 @@
   }
 
   function formatInfo(line) {
-    const moneyMatch = line.match(/\$(\d+)/);
-    const itemMatch = line.match(/took\s(.+?)\s\((\d+)\)\sfrom\s(the\s.+)\.$/i);
+    // Regex para detectar valores em dinheiro no formato brasileiro também (com . separando milhar)
+    const moneyMatch = line.match(/\$(\d+(\.\d{3})*|\d+)/);
+    const itemMatch = line.match(/pegou\s(.+?)\s\((\d+)\)\sdo\s(.+)\.$/i);
 
+    // Caso seja mensagem de dinheiro
     if (moneyMatch) {
-      const objectMatch = line.match(/from the (.+)\.$/i);
+      const objectMatch = line.match(/do (.+)\.$/i);
       return objectMatch
-        ? `<span class="orange">Info:</span> <span class="white">You took</span> <span class="green">$${moneyMatch[1]}</span> <span class="white">from the ${objectMatch[1]}</span>.`
-        : line;
+        ? `<span class="orange">Informação:</span> <span class="white">Você pegou</span> <span class="green">${moneyMatch[0]}</span> <span class="white">do ${objectMatch[1]}</span>.`
+        : null; // não retorna nada se não bater em português
     }
 
+    // Caso seja mensagem de item
     if (itemMatch) {
       const itemName = itemMatch[1];
       const itemQuantity = itemMatch[2];
       const fromObject = itemMatch[3];
 
-      return `<span class="orange">Info:</span> <span class="white">You took</span> <span class="white">${itemName}</span> <span class="white">(${itemQuantity})</span> <span class="white">from ${fromObject}</span>.`;
+      return `<span class="orange">Informação:</span> <span class="white">Você pegou</span> <span class="white">${itemName}</span> <span class="white">(${itemQuantity})</span> <span class="white">do ${fromObject}</span>.`;
     }
 
-    return line;
+    // Se não reconhecer em PT-BR → não mostra nada
+    return null;
   }
 
   function formatSmsMessage(line) {
