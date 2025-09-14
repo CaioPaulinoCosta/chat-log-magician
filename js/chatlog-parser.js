@@ -1012,6 +1012,10 @@
       return formatInfo(line);
     }
 
+    if (lowerLine.startsWith("info:")) {
+      return formatMotelInfo(line);
+    }
+
     if (lowerLine.includes("you have received $")) return colorMoneyLine(line);
 
     if (lowerLine.includes("[drug lab]")) return formatDrugLab();
@@ -1510,6 +1514,20 @@
 
     // Se não reconhecer em PT-BR → não mostra nada
     return null;
+  }
+
+  function formatMotelInfo(line) {
+    if (!line.includes("INFO:")) return null;
+
+    // Regex para capturar o nome entre "Você não está alugando" e "mais."
+    const regex = /Você não está alugando (.+) mais\./i;
+    const match = line.match(regex);
+
+    if (!match) return null;
+
+    const place = match[1]; // Nome capturado
+
+    return `<span class="blue">INFO:</span> Você não está alugando <span class="yellow">${place}</span> mais.`;
   }
 
   function formatSmsMessage(line) {
